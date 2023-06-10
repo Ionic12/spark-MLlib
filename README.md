@@ -2,12 +2,12 @@
 <div align="justify">
 Repository ini berisi implementasi tugas menggunakan Spark MLlib dengan melakukan percobaan yang serupa dengan yang dilakukan di CloudxLab. Repository ini dirancang untuk membantu pengguna mempelajari dan mempraktekkan Spark MLlib dengan contoh-contoh yang mirip dengan yang ada di CloudxLab.
 </div>
-
+<br><br>
 ## Folder & Data
 <img src="folder.png" />
 <img src="data.png" />
 <img src="hasil 1.1.png" />
-
+<br><br>
 # Movie Lens Ratings
 <div>
   <pre>
@@ -45,7 +45,7 @@ predictions.write.format("com.databricks.spark.csv").save("ml-predictions.csv")
 <img src="step 1.2.png"/>
 <img src="step 1.3.png"/>
 <img src="hasil 1.2.png"/>
-
+<br><br>
 # Movie Lens Reco (2.0)
 <div>
   <pre>
@@ -87,7 +87,7 @@ linesRDD.coalesce(1).saveAsTextFile(outputPath)
 <img src="step 2.1.png"/>
 <img src="step 2.2.png"/>
 <img src="step 2.3.png"/>
-
+<br><br>
 # Basic Statistic Summary
 <div>
   <pre>
@@ -115,3 +115,65 @@ print("Number of Nonzeros: {}".format(numNonzeros))
   </p>
 </div>
 <img src="step 2.4.png"/>
+<br><br>
+## K-Means Data
+<img src="file 2.png" />
+<br><br>
+# K-Means Scala
+<div>
+  <pre>
+    <code>
+import org.apache.spark.mllib.clustering.{KMeans, KMeansModel}
+import org.apache.spark.mllib.linalg.Vectors
+
+val data = sc.textFile("/data/spark/kmeans_data.txt")
+val parsedData = data.map(s => Vectors.dense(s.split(" ").map(_.toDouble))).cache()
+
+val numClusters = 2
+val numIterations = 20
+val clusters = KMeans.train(parsedData, numClusters, numIterations)
+
+val WSSSE = clusters.computeCost(parsedData)
+println("Within Set Sum of Squared Errors = " + WSSSE)
+
+clusters.save(sc, "KMeansModel1")
+val sameModel = KMeansModel.load(sc, "KMeansModel1")
+    </code>
+  </pre>
+  <p align="justify">
+  Apache Spark's MLlib library untuk melakukan pengelompokan data menggunakan algoritma K-Means Clustering. Data dibaca dari file, kemudian diubah menjadi vektor, dan model K-Means dilatih dengan data tersebut. Setelah pelatihan, kode menghitung Within Set Sum of Squared Errors (WSSSE) sebagai metrik evaluasi model. Selanjutnya, model yang dilatih disimpan dalam file dengan nama "KMeansModel1". Kode juga mencakup langkah untuk memuat kembali model yang telah disimpan sebelumnya. Dengan demikian, kode tersebut melibatkan proses pembacaan data, pelatihan model K-Means, evaluasi model dengan WSSSE, serta penyimpanan dan pengambilan kembali model yang dilatih.
+  </p>
+</div>
+<img src="step 3.1.png"/>
+<img src="step 3.2.png"/>
+<br><br>
+# K-Means Pyspark
+<div>
+  <pre>
+    <code>
+from pyspark.mllib.clustering import KMeans, KMeansModel
+from pyspark import SparkContext
+from numpy import array
+from math import sqrt
+
+sc = SparkContext.getOrCreate()
+data = sc.textFile("kmeans_data.txt")
+parsedData = data.map(lambda line: array([float(x) for x in line.split(' ')]))
+clusters = KMeans.train(parsedData, k=2, maxIterations=10, initializationMode="random")
+
+def error(point):
+    center = clusters.centers[clusters.predict(point)]
+    return sqrt(sum([x**2 for x in (point - center)]))
+
+WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
+print("Within Set Sum of Squared Error = " + str(WSSSE))
+
+clusters.save(sc, "myModelPath")
+sameModel = KMeansModel.load(sc, "myModelPath")
+    </code>
+  </pre>
+  <p align="justify">
+ Apache Spark's MLlib library dalam lingkungan PySpark untuk melakukan pengelompokan data menggunakan algoritma K-Means Clustering. Kode tersebut membaca data dari file, mengubahnya menjadi array, melatih model K-Means dengan data tersebut, menghitung Within Set Sum of Squared Error (WSSSE), menyimpan model yang dilatih, dan memuat kembali model yang telah disimpan sebelumnya.
+  </p>
+</div>
+<img src="step 3.3.png"/>
