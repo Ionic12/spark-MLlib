@@ -87,3 +87,31 @@ linesRDD.coalesce(1).saveAsTextFile(outputPath)
 <img src="step 2.1.png"/>
 <img src="step 2.2.png"/>
 <img src="step 2.3.png"/>
+
+# Basic Statistic Summary
+<div>
+  <pre>
+    <code>
+from pyspark import SparkContext
+from pyspark.mllib.linalg import Vectors
+from pyspark.mllib.stat import Statistics
+
+sc = SparkContext.getOrCreate()
+
+vectors = sc.textFile("products.csv").map(lambda line: Vectors.dense(line.split(',')))
+
+summary = Statistics.colStats(vectors)
+mean = summary.mean()
+variance = summary.variance()
+numNonzeros = summary.numNonzeros()
+
+print("Mean: {}".format(mean))
+print("Variance: {}".format(variance))
+print("Number of Nonzeros: {}".format(numNonzeros))
+    </code>
+  </pre>
+  <p align="justify">
+   Apache Spark's MLlib library dalam lingkungan PySpark untuk menghitung statistik ringkasan, seperti mean, variance, dan jumlah elemen bukan nol, dari data yang disimpan dalam file "products.csv". Setelah membaca file dan mengubah setiap baris menjadi vektor, kode tersebut menggunakan fungsi colStats dari pyspark.mllib.stat.Statistics untuk menghitung statistik ringkasan. Hasil statistik tersebut disimpan dalam variabel dan dicetak ke layar.
+  </p>
+</div>
+<img src="step 2.4.png"/>
