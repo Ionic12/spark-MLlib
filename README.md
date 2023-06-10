@@ -3,12 +3,16 @@
 Repository ini berisi implementasi tugas menggunakan Spark MLlib dengan melakukan percobaan yang serupa dengan yang dilakukan di CloudxLab. Repository ini dirancang untuk membantu pengguna mempelajari dan mempraktekkan Spark MLlib dengan contoh-contoh yang mirip dengan yang ada di CloudxLab.
 </div>
 <br><br>
+
 ## Folder & Data
+
 <img src="folder.png" />
 <img src="data.png" />
 <img src="hasil 1.1.png" />
 <br><br>
+
 # Movie Lens Ratings
+
 <div>
   <pre>
     <code>
@@ -46,7 +50,9 @@ predictions.write.format("com.databricks.spark.csv").save("ml-predictions.csv")
 <img src="step 1.3.png"/>
 <img src="hasil 1.2.png"/>
 <br><br>
+
 # Movie Lens Reco (2.0)
+
 <div>
   <pre>
     <code>
@@ -88,7 +94,9 @@ linesRDD.coalesce(1).saveAsTextFile(outputPath)
 <img src="step 2.2.png"/>
 <img src="step 2.3.png"/>
 <br><br>
+
 # Basic Statistic Summary
+
 <div>
   <pre>
     <code>
@@ -116,10 +124,14 @@ print("Number of Nonzeros: {}".format(numNonzeros))
 </div>
 <img src="step 2.4.png"/>
 <br><br>
+
 ## K-Means Data
+
 <img src="file 2.png" />
 <br><br>
+
 # K-Means Scala
+
 <div>
   <pre>
     <code>
@@ -147,7 +159,9 @@ val sameModel = KMeansModel.load(sc, "KMeansModel1")
 <img src="step 3.1.png"/>
 <img src="step 3.2.png"/>
 <br><br>
+
 # K-Means Pyspark
+
 <div>
   <pre>
     <code>
